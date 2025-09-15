@@ -1,0 +1,3 @@
+C:/Workspace/openSource/GitGJB/Windows_Demo/toolchains/CMakeToolChain/build/x64/CMakeFiles/ALL_BUILD.dir
+C:/Workspace/openSource/GitGJB/Windows_Demo/toolchains/CMakeToolChain/build/x64/CMakeFiles/ZERO_CHECK.dir
+C:/Workspace/openSource/GitGJB/Windows_Demo/toolchains/CMakeToolChain/build/x64/src/CMakeFiles/CmakeToolProject.dir

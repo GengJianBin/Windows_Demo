@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Workspace\openSource\GitGJB\Windows_Demo\toolchains\CMakeToolChain\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Workspace\openSource\GitGJB\Windows_Demo\toolchains\CMakeToolChain\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{07826CC7-93A1-34E6-9388-EDEA04DC6982}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

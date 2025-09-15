@@ -1,0 +1,3 @@
+﻿  Building Custom Rule C:/Workspace/openSource/GitGJB/Windows_Demo/toolchains/CMakeToolChain/src/CMakeLists.txt
+  main.cpp
+LINK : fatal error LNK1104: 无法打开文件“..\libs.lib”

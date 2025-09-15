@@ -1,0 +1,10 @@
+^C:\WORKSPACE\OPENSOURCE\GITGJB\WINDOWS_DEMO\TOOLCHAINS\CMAKETOOLCHAIN\BUILD\X64\CMAKEFILES\DE82CB9AD92B52BB64086B5F701B7B34\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Workspace/openSource/GitGJB/Windows_Demo/toolchains/CMakeToolChain -BC:/Workspace/openSource/GitGJB/Windows_Demo/toolchains/CMakeToolChain/build/x64 --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Workspace/openSource/GitGJB/Windows_Demo/toolchains/CMakeToolChain/build/x64/CmakeToolProject.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
