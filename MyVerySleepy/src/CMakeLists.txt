@@ -27,7 +27,19 @@ add_executable(${PROJECT_NAME}
 )
 
 source_group("profiler" FILES ${PROFILER_HEADERS} ${PROFILER_SOURCES})
-source_group("utils" ${UTILS})
+source_group("utils" FILES ${UTILS})
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC 
+    _WIN64
+    WIN32
+    _DEBUG
+    _WINDOWS
+    _CRT_SECURE_NO_WARNINGS
+    _CRT_SECURE_NO_DEPRECATE 
+    _CRT_NONSTDC_NO_DEPRECATE
+    UNICODE 
+    _UNICODE
+)
 
 # extern include directory
 # target_include_directories(${PROJECT_NAME} PRIVATE ../include)

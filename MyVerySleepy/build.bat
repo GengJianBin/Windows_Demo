@@ -29,4 +29,6 @@ cmake -S ../../ -B build -G "Visual Studio 17 2022" -A x64
 REM generate 32 bit project
 REM cmake -S . -B build -G "Visual Studio 17 2022" -A Win32
 
+REM compile solution
+cmake --build . --config Debug
 cd ../..
