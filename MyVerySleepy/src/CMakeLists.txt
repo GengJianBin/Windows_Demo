@@ -10,8 +10,8 @@ file(GLOB UTILS
     ./utils/mythread.h
     ./utils/mythread.cpp
     ./utils/osutils.cpp
-    ./utils/sortlist.h
-    ./utils/sortlist.cpp
+    #./utils/sortlist.h
+    #./utils/sortlist.cpp
     ./utils/stringutils.h
     ./utils/stringutils.cpp
     ./utils/WowW64.h
@@ -42,7 +42,7 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
 )
 
 # extern include directory
-# target_include_directories(${PROJECT_NAME} PRIVATE ../include)
+target_include_directories(${PROJECT_NAME} PRIVATE ../include)
 
 # extern link libs
 # target_link_libraries(${PROJECT_NAME} PRIVATE ../libs)

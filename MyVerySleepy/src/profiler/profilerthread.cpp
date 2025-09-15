@@ -23,20 +23,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 http://www.gnu.org/copyleft/gpl.html..
 =====================================================================*/
 
-#include "../wxprofilergui/profilergui.h"
+//#include "../wxprofilergui/profilergui.h" // gjb
 #include "profilerthread.h"
 #include "threadinfo.h"
 #include "debugger.h"
-#include <wx/wfstream.h>
-#include <wx/zipstrm.h>
-#include <wx/txtstrm.h>
+//#include <wx/wfstream.h> // gjb
+//#include <wx/zipstrm.h> // gjb
+//#include <wx/txtstrm.h> // gjb
 
 #include "../utils/stringutils.h"
 #include <fstream>
 #include <assert.h>
 #include <algorithm>
 #include <Psapi.h>
-#include "../appinfo.h"
+//#include "../appinfo.h"  // gjb
 
 #pragma comment(lib, "winmm.lib")
 
@@ -73,7 +73,7 @@ ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>
 	numThreadsRunning = (int)target_threads.size();
 	status = L"Initializing";
 
-	filename = wxFileName::CreateTempFileName(wxEmptyString);
+	//filename = wxFileName::CreateTempFileName(wxEmptyString); // gjb
 }
 
 
@@ -199,7 +199,7 @@ void ProfilerThread::saveData()
 {
 	//get process id of the process the target thread is running in
 	//const DWORD process_id = GetProcessIdOfThread(profiler.getTarget());
-
+#if 0 // gjb
 	wxFFileOutputStream out(filename);
 	wxZipOutputStream zip(out);
 	wxTextOutputStream txt(zip, wxEOL_NATIVE, wxConvAuto(wxFONTENCODING_UTF8));
@@ -330,11 +330,12 @@ void ProfilerThread::saveData()
 		error(L"Error writing to file");
 		return;
 	}
+#endif // gjb
 }
 
 void ProfilerThread::run()
 {
-	wxLog::EnableLogging();
+	//wxLog::EnableLogging();// gjb
 
 	if (debugger)
 		debugger->attach([this](Debugger::NotifyData const &notification) {
@@ -381,7 +382,7 @@ void ProfilerThread::run()
 void ProfilerThread::error(const std::wstring& what)
 {
 	failed = true;
-	std::cerr << "ProfilerThread Error: " << what << std::endl;
+	//std::cerr << "ProfilerThread Error: " << what << std::endl;// gjb
 
 	::MessageBox(NULL, std::wstring(L"Error: " + what).c_str(), L"Profiler Error", MB_OK);
 }

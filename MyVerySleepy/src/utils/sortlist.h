@@ -23,7 +23,7 @@ http://www.gnu.org/copyleft/gpl.html.
 #ifndef __SORTLIST_H_666_
 #define __SORTLIST_H_666_
 
-#include <wx/listctrl.h>
+//#include <wx/listctrl.h> //gjb
 
 class wxSortedListCtrl : public wxListCtrl
 {

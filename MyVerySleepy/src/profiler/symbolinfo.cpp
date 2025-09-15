@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 http://www.gnu.org/copyleft/gpl.html..
 =====================================================================*/
 #include "symbolinfo.h"
-#include "../wxProfilerGUI/profilergui.h"
+//#include "../wxProfilerGUI/profilergui.h" // gjb
 
 #include "../utils/stringutils.h"
 #include "../utils/osutils.h"
@@ -33,7 +33,7 @@ http://www.gnu.org/copyleft/gpl.html..
 #include <algorithm>
 #include <shlwapi.h>
 #include "../utils/except.h"
-#include "../appinfo.h"
+//#include "../appinfo.h"
 
 SymLogFn *g_symLog = NULL;
 
@@ -199,7 +199,7 @@ void SymbolInfo::loadSymbols(HANDLE process_handle_, bool download)
 {
 	process_handle = process_handle_;
 
-	wxBusyCursor busy;
+	//wxBusyCursor busy; // gjb
 
 	is64BitProcess = Is64BitProcess(process_handle);
 
@@ -400,21 +400,21 @@ std::wstring SymbolInfo::saveMinidump()
 #ifdef _WIN64
 	if (!Is64BitProcess(process_handle))
 	{
-		wxLogWarning(
-			L"Warning: minidumps of 32-bit processes saved by 64-bit processes will most likely not be saved correctly.\n"
-			L"Use the 32-bit version of " _T(APPNAME) L" to profile 32-bit processes if a minidump needs to be included."
-		);
+		//wxLogWarning(
+		//	L"Warning: minidumps of 32-bit processes saved by 64-bit processes will most likely not be saved correctly.\n"
+		//	L"Use the 32-bit version of " _T(APPNAME) L" to profile 32-bit processes if a minidump needs to be included."
+		//);
 	}
 #endif
 
-	wxFile f;
-	std::wstring dumppath = wxFileName::CreateTempFileName(wxEmptyString, &f);
-	wenforce(dbgHelpMs.MiniDumpWriteDump(
-		process_handle,
-		GetProcessId(process_handle),
-		(HANDLE)_get_osfhandle(f.fd()),
-		MiniDumpNormal,
-		NULL, NULL, NULL), "MiniDumpWriteDump");
-	f.Close();
+	//wxFile f;
+	std::wstring dumppath;// = wxFileName::CreateTempFileName(wxEmptyString, &f); //gjb
+	//wenforce(dbgHelpMs.MiniDumpWriteDump(
+	//	process_handle,
+	//	GetProcessId(process_handle),
+	//	(HANDLE)_get_osfhandle(f.fd()),
+	//	MiniDumpNormal,
+	//	NULL, NULL, NULL), "MiniDumpWriteDump");
+	//f.Close(); //gjb
 	return dumppath;
 }

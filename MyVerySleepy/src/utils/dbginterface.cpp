@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 http://www.gnu.org/copyleft/gpl.html.
 =====================================================================*/
 #include "dbginterface.h"
-#include <wx/log.h>
+//#include <wx/log.h>
 #include "except.h"
 
 DbgHelp dbgHelpMs;
@@ -58,10 +58,11 @@ static bool dbgHelpTryLoad(LPCWSTR name, DbgHelp* dest)
 	return true;
 }
 
-static void dbgHelpLoad(LPCWSTR name, DbgHelp* dest, const wxString& description)
+static void dbgHelpLoad(LPCWSTR name, DbgHelp* dest, const /*wxString //gjb */std::string& description)
 {
-	if (!dbgHelpTryLoad(name, dest))
-		wxLogWarning("Could not load " + wxString(name) + ": " + wxSysErrorMsg() + "\n" + description + " will be unavailable.");
+	if (!dbgHelpTryLoad(name, dest)) {
+		//wxLogWarning("Could not load " + wxString(name) + ": " + wxSysErrorMsg() + "\n" + description + " will be unavailable."); //gjb
+	}
 }
 
 bool dbgHelpInit()
