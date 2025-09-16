@@ -3,7 +3,7 @@ message(STATUS "当前项目名: ${PROJECT_NAME}")
 file(GLOB PROFILER_HEADERS ./profiler/*.h)
 file(GLOB PROFILER_SOURCES ./profiler/*.cpp)
 file(GLOB UTILS 
-    ./utils/container.h
+    #./utils/container.h
     ./utils/dbginterface.h
     ./utils/dbginterface.cpp
     ./utils/except.h
@@ -45,4 +45,11 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
 target_include_directories(${PROJECT_NAME} PRIVATE ../include)
 
 # extern link libs
-# target_link_libraries(${PROJECT_NAME} PRIVATE ../libs)
+ target_link_libraries(${PROJECT_NAME} PRIVATE
+  comctl32.lib
+  rpcrt4.lib
+  advapi32.lib
+  shlwapi.lib
+  psapi.lib
+  #crashback.lib
+  dbgeng.lib)
