@@ -121,7 +121,8 @@ void ProfilerThread::sample(const SAMPLE_TYPE timeSpent)
 		}
 		catch (const ProfilerExcep& e)
 		{
-			error(_T("ProfilerExcep: ") + e.what());
+			//error(_T("ProfilerExcep: ") + e.what()); //gjb
+			error(L"ProfilerExcep: " + e.what());
 			this->commit_suicide = true;
 		}
 	}
@@ -175,7 +176,7 @@ void ProfilerThread::sampleLoop()
 		double t = (double)diff / (double)freq.QuadPart;
 
 		__int64 elapsed = now.QuadPart - start.QuadPart;
-		if (!minidump_saved && prefs.saveMinidump.GetValue()>=0 && elapsed >= prefs.saveMinidump.GetValue() * freq.QuadPart)
+		if (!minidump_saved/* && prefs.saveMinidump.GetValue()>=0 && elapsed >= prefs.saveMinidump.GetValue() * freq.QuadPart*/) //gjb
 		{
 			minidump_saved = true;
 			status = L"Saving minidump";
@@ -186,8 +187,8 @@ void ProfilerThread::sampleLoop()
 
 		sample(t);
 
-		int ms = 100 / prefs.throttle.GetValue();
-		Sleep(ms);
+		//int ms = 100 / prefs.throttle.GetValue();//gjb
+		//Sleep(ms);
 
 		prev = now;
 	}

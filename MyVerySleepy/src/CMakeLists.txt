@@ -14,8 +14,8 @@ file(GLOB UTILS
     #./utils/sortlist.cpp
     ./utils/stringutils.h
     ./utils/stringutils.cpp
-    ./utils/WowW64.h
-    ./utils/WowW64.cpp
+    ./utils/WoW64.h
+    ./utils/WoW64.cpp
 )
 
 # define execulate program

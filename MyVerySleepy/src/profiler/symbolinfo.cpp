@@ -65,7 +65,8 @@ SymbolInfo::SymbolInfo()
 {
 }
 
-BOOL CALLBACK symCallback(HANDLE WXUNUSED(hProcess), ULONG ActionCode, ULONG64 CallbackData, ULONG64 WXUNUSED(UserContext))
+//BOOL CALLBACK symCallback(HANDLE WXUNUSED(hProcess), ULONG ActionCode, ULONG64 CallbackData, ULONG64 WXUNUSED(UserContext)) //gjb
+BOOL CALLBACK symCallback(HANDLE hProcess, ULONG ActionCode, ULONG64 CallbackData, ULONG64 UserContext)
 {
 	switch(ActionCode)
 	{
@@ -238,7 +239,7 @@ void SymbolInfo::loadSymbols(HANDLE process_handle_, bool download)
 			}
 		}
 
-		prefs.AdjustSymbolPath(sympath, download);
+		//prefs.AdjustSymbolPath(sympath, download); //gjb
 	}
 
 	loadSymbolsUsing(&dbgHelpMs, sympath);
@@ -251,7 +252,7 @@ void SymbolInfo::loadSymbols(HANDLE process_handle_, bool download)
 
 DbgHelp* SymbolInfo::getGccDbgHelp()
 {
-	if (prefs.UseWine())
+	if (/*prefs.UseWine()*/1) //gjb
 	{
 #ifdef _WIN64
 		// We can't use the regular dbghelpw to profile 32-bit applications,
