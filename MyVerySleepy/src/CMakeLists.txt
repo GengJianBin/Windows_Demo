@@ -1,7 +1,22 @@
 message(STATUS "当前项目名: ${PROJECT_NAME}")
 
-file(GLOB PROFILER_HEADERS ./profiler/*.h)
-file(GLOB PROFILER_SOURCES ./profiler/*.cpp)
+file(GLOB PROFILER_HEADERS 
+    ./profiler/debugger.h
+    ./profiler/processinfo.h
+    ./profiler/profiler.h
+    ./profiler/profilerthread.h
+    ./profiler/symbolinfo.h
+    ./profiler/threadinfo.h
+)
+file(GLOB PROFILER_SOURCES 
+    ./profiler/debugger.cpp
+    ./profiler/processinfo.cpp
+    ./profiler/profiler.cpp
+    ./profiler/profilerthread.cpp
+    ./profiler/symbolinfo.cpp
+    ./profiler/threadinfo.cpp
+)
+
 file(GLOB UTILS 
     #./utils/container.h
     ./utils/dbginterface.h

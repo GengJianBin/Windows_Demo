@@ -74,6 +74,7 @@ ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>
 	status = L"Initializing";
 
 	//filename = wxFileName::CreateTempFileName(wxEmptyString); // gjb
+	filename = L"D:/test.tmp";
 }
 
 
