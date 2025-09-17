@@ -33,12 +33,22 @@ file(GLOB UTILS
     ./utils/WoW64.cpp
 )
 
+file(GLOB COMMON_WX 
+    ./wxWidgets/include/*.*
+)
+
+# extern lib directory must be before add_execute or add_library and it is take effect in global
+# link_directories(
+#     ../libs/x64/Debug/
+# )
+
 # define execulate program
 add_executable(${PROJECT_NAME} 
     main.cpp
     ${PROFILER_HEADERS}
     ${PROFILER_SOURCES}
     ${UTILS}
+    ${COMMON_WX}
 )
 
 source_group("profiler" FILES ${PROFILER_HEADERS} ${PROFILER_SOURCES})
@@ -56,15 +66,28 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
     _UNICODE
 )
 
+message(STATUS "目录名: ${PROJECT_BINARY_DIR}")
+
 # extern include directory
-target_include_directories(${PROJECT_NAME} PRIVATE ../include)
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    ../include
+    ./wxWidgets/include/
+)
+
+# take effect only target
+target_link_directories(${PROJECT_NAME} PRIVATE
+    ../libs/x64/Debug/
+)
 
 # extern link libs
- target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries(${PROJECT_NAME} PRIVATE
   comctl32.lib
   rpcrt4.lib
   advapi32.lib
   shlwapi.lib
   psapi.lib
   #crashback.lib
-  dbgeng.lib)
+  dbgeng.lib
+  wxbase31ud.lib
+  wxzlibd.lib
+)

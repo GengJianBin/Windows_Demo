@@ -6,29 +6,29 @@ if not exist "src" (
     call mkdir src
 )
 if not exist "include" (
-    call mkdir include
+    call mkdir includecls
+
 )
 if not exist "libs" (
     call mkdir libs
 )
 
-if not exist "build" (
-    call mkdir build
+if not exist "output" (
+    call mkdir output
 )
 
 REM generate 64 bit project
-cd build
+cd output
 if not exist "x64" (
     call mkdir x64
 )
 cd x64
-cmake ../..
-REM build cmake project
+REM generate cmake project
 cmake -S ../../ -B build -G "Visual Studio 17 2022" -A x64
 
 REM generate 32 bit project
 REM cmake -S . -B build -G "Visual Studio 17 2022" -A Win32
 
 REM compile solution
-cmake --build . --config Debug
+REM cmake --build . --config Debug
 cd ../..

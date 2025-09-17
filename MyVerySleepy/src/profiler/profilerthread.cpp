@@ -27,9 +27,9 @@ http://www.gnu.org/copyleft/gpl.html..
 #include "profilerthread.h"
 #include "threadinfo.h"
 #include "debugger.h"
-//#include <wx/wfstream.h> // gjb
-//#include <wx/zipstrm.h> // gjb
-//#include <wx/txtstrm.h> // gjb
+#include <wx/wfstream.h> // gjb
+#include <wx/zipstrm.h> // gjb
+#include <wx/txtstrm.h> // gjb
 
 #include "../utils/stringutils.h"
 #include <fstream>
@@ -74,7 +74,7 @@ ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>
 	status = L"Initializing";
 
 	//filename = wxFileName::CreateTempFileName(wxEmptyString); // gjb
-	filename = L"D:/test.tmp";
+	filename = L"C:/Users/13684/AppData/Local/Temp/test.tmp";
 }
 
 
@@ -201,7 +201,7 @@ void ProfilerThread::saveData()
 {
 	//get process id of the process the target thread is running in
 	//const DWORD process_id = GetProcessIdOfThread(profiler.getTarget());
-#if 0 // gjb
+#if 1 // gjb
 	wxFFileOutputStream out(filename);
 	wxZipOutputStream zip(out);
 	wxTextOutputStream txt(zip, wxEOL_NATIVE, wxConvAuto(wxFONTENCODING_UTF8));
@@ -323,8 +323,10 @@ void ProfilerThread::saveData()
 	//------------------------------------------------------------------------
 	// Change FORMAT_VERSION when the file format changes
 	// (and becomes unreadable by older versions of Sleepy).
-	zip.PutNextEntry(L"Version " _T(FORMAT_VERSION) L" required");
-	txt << FORMAT_VERSION << "\n";
+	//zip.PutNextEntry(L"Version " _T(FORMAT_VERSION) L" required"); //gjb
+	//txt << FORMAT_VERSION << "\n"; //gjb
+	zip.PutNextEntry(L"Version " L"0.92" L" required");
+	txt << L"0.92" << "\n";
 
 
 	if (!out.IsOk() || !zip.IsOk())
