@@ -74,7 +74,7 @@ ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>
 	status = L"Initializing";
 
 	//filename = wxFileName::CreateTempFileName(wxEmptyString); // gjb
-	filename = L"C:/Users/13684/AppData/Local/Temp/test.tmp";
+	filename = L"C:/Users/13684/AppData/Local/Temp/test.sleepy";
 }
 
 

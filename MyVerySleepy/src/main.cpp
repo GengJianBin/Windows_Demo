@@ -4,6 +4,13 @@
 #include "profiler/debugger.h"
 #include <tlhelp32.h>
 #include <thread>
+#include "utils/osutils.h"
+#include "profiler/symbolinfo.h"
+
+void symLogCallback(const wchar_t* text)
+{
+    std::cout << "sysLog: " << text << std::endl;
+}
 
 HANDLE GetProcessHandleByPID(DWORD dwPID, DWORD dwDesiredAccess) {
     HANDLE hProcess = NULL;
@@ -95,14 +102,36 @@ std::vector<HANDLE> GetAllThreadHandles(DWORD dwProcessId, DWORD dwDesiredAccess
 int main() {
     std::cout << "Hello, CMake Project!" << std::endl;
 
-	Debugger* debugger = NULL;
-	DWORD pId = 30928;
-    HANDLE pHandle = GetProcessHandleByPID(pId, PROCESS_QUERY_INFORMATION | PROCESS_VM_READ);
+    //1. set system log callback
+    g_symLog = symLogCallback;
 
-    DWORD dwDesiredAccess = THREAD_QUERY_INFORMATION | THREAD_SUSPEND_RESUME | THREAD_TERMINATE;
+    //2. init symbol information
+    InitSysInfo();
+
+    //3. init dbghelp
+    if (!dbgHelpInit()) {
+        return false;
+    }
+
+
+	Debugger* debugger = NULL;
+	DWORD pId = 0x78D0;//30928
+    HANDLE pHandle = GetProcessHandleByPID(pId, PROCESS_ALL_ACCESS);
+
+    DWORD dwDesiredAccess = THREAD_ALL_ACCESS;
     std::vector<HANDLE> vecTheadHandles = GetAllThreadHandles(pId, dwDesiredAccess);
 
+    bool bProfile = CanProfileProcess(pHandle);
+    if (!bProfile) {
+        std::cout << "This process can't be profile,this process id is " << pId << std::endl;
+    }
     SymbolInfo* pSymInfo =  new SymbolInfo();
+
+    if (pHandle)
+    {
+        pSymInfo->loadSymbols(pHandle, false);
+    }
+
 	ProfilerThread* profilerthread = new ProfilerThread(
         pHandle,
         vecTheadHandles,
@@ -113,7 +142,7 @@ int main() {
     profilerthread->launch(THREAD_PRIORITY_TIME_CRITICAL);
 
 
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+    std::this_thread::sleep_for(std::chrono::seconds(10));
 
     profilerthread->commitSuicide();
 
@@ -121,17 +150,18 @@ int main() {
          
     }
     else {
-        std::cout << "success:" << profilerthread->getDone() << " fauled:" << profilerthread->getFailed() << std::endl;
-    }
-
-    if (pSymInfo) {
-        delete pSymInfo;
-        pSymInfo = nullptr;
+        std::cout << "success:" << profilerthread->getDone() << " failed:" << profilerthread->getFailed() << std::endl;
     }
 
     profilerthread->waitFor(100);
 
     profilerthread->join();
+
+
+    if (pSymInfo) {
+        delete pSymInfo;
+        pSymInfo = nullptr;
+    }
 
     FreeThreadHandles(vecTheadHandles);
 
@@ -142,5 +172,6 @@ int main() {
         delete profilerthread;
         profilerthread = nullptr;
     }
+    CloseHandle(pHandle);
     return 0;
 }
