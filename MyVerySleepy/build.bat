@@ -30,5 +30,11 @@ REM generate 32 bit project
 REM cmake -S . -B build -G "Visual Studio 17 2022" -A Win32
 
 REM compile solution
-REM cmake --build . --config Debug
+cd build
+cmake --build . --config Debug
+
+REM switch x64 directory
+cd .
+
+REM switch root directory
 cd ../..

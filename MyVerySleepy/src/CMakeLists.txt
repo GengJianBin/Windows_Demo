@@ -91,3 +91,20 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   wxbase31ud.lib
   wxzlibd.lib
 )
+
+set(OBJ_FILE_DIR $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+# copy dll to exe path
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E echo "OBJ_FILE_DIR is ${OBJ_FILE_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E echo "CMAKE_SOURCE_DIR is ${CMAKE_SOURCE_DIR}"
+
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/dbghelpdr.dll      ${OBJ_FILE_DIR}/dbghelpdr.dll
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/dbghelpms.dll      ${OBJ_FILE_DIR}/dbghelpms.dll   
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/dbghelpms6.dll     ${OBJ_FILE_DIR}/dbghelpms6.dll
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/dbghelpw.dll       ${OBJ_FILE_DIR}/dbghelpw.dll
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/dbghelpw_wow64.dll ${OBJ_FILE_DIR}/dbghelpw_wow64.dll
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/srcsrv.dll         ${OBJ_FILE_DIR}srcsrv.dll
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/symsrv.dll         ${OBJ_FILE_DIR}/symsrv.dll 
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/symsrv.yes         ${OBJ_FILE_DIR}/symsrv.yes
+)

@@ -14,38 +14,35 @@ void symLogCallback(const wchar_t* text)
 
 HANDLE GetProcessHandleByPID(DWORD dwPID, DWORD dwDesiredAccess) {
     HANDLE hProcess = NULL;
-    // µ÷ÓÃOpenProcess´ò¿ª½ø³Ì
     hProcess = OpenProcess(
-        dwDesiredAccess,  // ËùĞèÈ¨ÏŞ
-        FALSE,            // ¾ä±ú²»¼Ì³Ğ
-        dwPID             // Ä¿±êPID
+        dwDesiredAccess, 
+        FALSE,            
+        dwPID             
     );
 
-    // ´íÎó¼ì²é
     if (hProcess == NULL) {
         DWORD dwError = GetLastError();
         switch (dwError) {
         case ERROR_ACCESS_DENIED:
-            printf("´íÎó£ºÈ¨ÏŞ²»×ã£¨Ğè¹ÜÀíÔ±È¨ÏŞ»òÄ¿±ê½ø³ÌÊÜ±£»¤£©\n");
+            printf("ï¿½ï¿½ï¿½ï¿½È¨ï¿½Ş²ï¿½ï¿½ã£¨ï¿½ï¿½ï¿½ï¿½ï¿½Ô±È¨ï¿½Ş»ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü±ï¿½ï¿½ï¿½ï¿½ï¿½\n");
             break;
         case ERROR_INVALID_PARAMETER:
-            printf("´íÎó£ºÎŞĞ§µÄPID£¨PIDÎª0»ò³¬³ö·¶Î§£©\n");
+            printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½PIDï¿½ï¿½PIDÎª0ï¿½ò³¬³ï¿½ï¿½ï¿½Î§ï¿½ï¿½\n");
             break;
         case ERROR_INVALID_HANDLE:
-            printf("´íÎó£º¾ä±úÎŞĞ§£¨ÏµÍ³×ÊÔ´²»×ã£©\n");
+            printf("ï¿½ï¿½ï¿½ó£º¾ï¿½ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½ÏµÍ³ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ã£©\n");
             break;
         default:
-            printf("´íÎó£º»ñÈ¡¾ä±úÊ§°Ü£¬´íÎóÂë£º%lu\n", dwError);
+            printf("ï¿½ï¿½ï¿½ó£º»ï¿½È¡ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£º%lu\n", dwError);
             break;
         }
     }
     else {
-        printf("³É¹¦»ñÈ¡½ø³Ì¾ä±ú£¬¾ä±úÖµ£º%p\n", hProcess);
+        printf("ï¿½É¹ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½%p\n", hProcess);
     }
     return hProcess;
 }
 
-// ÊÍ·ÅÏß³Ì¾ä±úÊı×é
 void FreeThreadHandles(std::vector<HANDLE>& handles) {
     for (HANDLE hThread : handles) {
         if (hThread != NULL && hThread != INVALID_HANDLE_VALUE) {
@@ -55,45 +52,40 @@ void FreeThreadHandles(std::vector<HANDLE>& handles) {
     handles.clear();
 }
 
-// »ñÈ¡Ö¸¶¨½ø³ÌÖĞËùÓĞÏß³ÌµÄ¾ä±ú
 std::vector<HANDLE> GetAllThreadHandles(DWORD dwProcessId, DWORD dwDesiredAccess) {
     std::vector<HANDLE> threadHandles;
     HANDLE hSnapshot = INVALID_HANDLE_VALUE;
 
-    // ´´½¨Ïß³Ì¿ìÕÕ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì¿ï¿½ï¿½ï¿½
     hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE) {
-        printf("´´½¨Ïß³Ì¿ìÕÕÊ§°Ü£¬´íÎóÂë: %lu\n", GetLastError());
+        printf("ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì¿ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: %lu\n", GetLastError());
         return threadHandles;
     }
 
     THREADENTRY32 te32;
     te32.dwSize = sizeof(THREADENTRY32);
 
-    // »ñÈ¡µÚÒ»¸öÏß³ÌĞÅÏ¢
     if (!Thread32First(hSnapshot, &te32)) {
-        printf("»ñÈ¡Ïß³ÌĞÅÏ¢Ê§°Ü£¬´íÎóÂë: %lu\n", GetLastError());
+        printf("ï¿½ï¿½È¡ï¿½ß³ï¿½ï¿½ï¿½Ï¢Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: %lu\n", GetLastError());
         CloseHandle(hSnapshot);
         return threadHandles;
     }
 
-    // ±éÀúËùÓĞÏß³Ì
     do {
-        // ¼ì²éÏß³ÌÊÇ·ñÊôÓÚÄ¿±ê½ø³Ì
         if (te32.th32OwnerProcessID == dwProcessId) {
-            // ´ò¿ªÏß³Ì»ñÈ¡¾ä±ú
             HANDLE hThread = OpenThread(dwDesiredAccess, FALSE, te32.th32ThreadID);
             if (hThread == NULL) {
-                printf("´ò¿ªÏß³Ì %lu Ê§°Ü£¬´íÎóÂë: %lu\n", te32.th32ThreadID, GetLastError());
+                printf("ï¿½ï¿½ï¿½ß³ï¿½ %lu Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: %lu\n", te32.th32ThreadID, GetLastError());
             }
             else {
                 threadHandles.push_back(hThread);
-                printf("³É¹¦»ñÈ¡Ïß³Ì¾ä±ú£¬Ïß³ÌID: %lu, ¾ä±ú: %p\n", te32.th32ThreadID, hThread);
+                printf("ï¿½É¹ï¿½ï¿½ï¿½È¡ï¿½ß³Ì¾ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½ID: %lu, ï¿½ï¿½ï¿½: %p\n", te32.th32ThreadID, hThread);
             }
         }
     } while (Thread32Next(hSnapshot, &te32));
 
-    // ¹Ø±Õ¿ìÕÕ¾ä±ú
+    //å…³é—­å¥æŸ„
     CloseHandle(hSnapshot);
     return threadHandles;
 }
@@ -101,6 +93,10 @@ std::vector<HANDLE> GetAllThreadHandles(DWORD dwProcessId, DWORD dwDesiredAccess
 
 int main() {
     std::cout << "Hello, CMake Project!" << std::endl;
+
+    std::cout << "Please Input The Process ID To Capture:" << std::endl;
+    DWORD pId = 0;
+    std::cin >> pId;
 
     //1. set system log callback
     g_symLog = symLogCallback;
@@ -113,9 +109,8 @@ int main() {
         return false;
     }
 
-
 	Debugger* debugger = NULL;
-	DWORD pId = 0x78D0;//30928
+	
     HANDLE pHandle = GetProcessHandleByPID(pId, PROCESS_ALL_ACCESS);
 
     DWORD dwDesiredAccess = THREAD_ALL_ACCESS;
