@@ -2,10 +2,10 @@
 #include "utils/dbginterface.h"
 #include "profiler/profilerthread.h"
 #include "profiler/debugger.h"
-#include <tlhelp32.h>
-#include <thread>
 #include "utils/osutils.h"
 #include "profiler/symbolinfo.h"
+#include <tlhelp32.h>
+#include <thread>
 
 void symLogCallback(const wchar_t* text)
 {
