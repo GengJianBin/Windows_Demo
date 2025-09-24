@@ -23,22 +23,21 @@ HANDLE GetProcessHandleByPID(DWORD dwPID, DWORD dwDesiredAccess) {
     if (hProcess == NULL) {
         DWORD dwError = GetLastError();
         switch (dwError) {
-        case ERROR_ACCESS_DENIED:
-            printf("����Ȩ�޲��㣨�����ԱȨ�޻�Ŀ������ܱ�����\n");
-            break;
-        case ERROR_INVALID_PARAMETER:
-            printf("������Ч��PID��PIDΪ0�򳬳���Χ��\n");
-            break;
-        case ERROR_INVALID_HANDLE:
-            printf("���󣺾����Ч��ϵͳ��Դ���㣩\n");
-            break;
-        default:
-            printf("���󣺻�ȡ���ʧ�ܣ������룺%lu\n", dwError);
-            break;
+            case ERROR_ACCESS_DENIED:
+                printf("错误：权限不足（需管理员权限或目标进程受保护）\n");
+                break;
+            case ERROR_INVALID_PARAMETER:
+                printf("错误：无效的PID（PID为0或超出范围）\n");
+                break;
+            case ERROR_INVALID_HANDLE:
+                printf("错误：句柄无效（系统资源不足）\n");
+                break;
+            default:
+                printf("错误：获取句柄失败，错误码：%lu\n", dwError);
+                break;
         }
-    }
-    else {
-        printf("�ɹ���ȡ���̾�������ֵ��%p\n", hProcess);
+    } else {
+        printf("成功获取进程句柄，句柄值：%p\n", hProcess);
     }
     return hProcess;
 }
@@ -59,7 +58,7 @@ std::vector<HANDLE> GetAllThreadHandles(DWORD dwProcessId, DWORD dwDesiredAccess
     // �����߳̿���
     hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE) {
-        printf("�����߳̿���ʧ�ܣ�������: %lu\n", GetLastError());
+        printf("创建线程快照失败，错误码: %lu\n", GetLastError());
         return threadHandles;
     }
 
@@ -67,7 +66,7 @@ std::vector<HANDLE> GetAllThreadHandles(DWORD dwProcessId, DWORD dwDesiredAccess
     te32.dwSize = sizeof(THREADENTRY32);
 
     if (!Thread32First(hSnapshot, &te32)) {
-        printf("��ȡ�߳���Ϣʧ�ܣ�������: %lu\n", GetLastError());
+        printf("获取线程信息失败，错误码: %lu\n", GetLastError());
         CloseHandle(hSnapshot);
         return threadHandles;
     }
@@ -76,11 +75,10 @@ std::vector<HANDLE> GetAllThreadHandles(DWORD dwProcessId, DWORD dwDesiredAccess
         if (te32.th32OwnerProcessID == dwProcessId) {
             HANDLE hThread = OpenThread(dwDesiredAccess, FALSE, te32.th32ThreadID);
             if (hThread == NULL) {
-                printf("���߳� %lu ʧ�ܣ�������: %lu\n", te32.th32ThreadID, GetLastError());
-            }
-            else {
+                printf("打开线程 %lu 失败，错误码: %lu\n", te32.th32ThreadID, GetLastError());
+            } else {
                 threadHandles.push_back(hThread);
-                printf("�ɹ���ȡ�߳̾�����߳�ID: %lu, ���: %p\n", te32.th32ThreadID, hThread);
+                printf("成功获取线程句柄，线程ID: %lu, 句柄: %p\n", te32.th32ThreadID, hThread);
             }
         }
     } while (Thread32Next(hSnapshot, &te32));
