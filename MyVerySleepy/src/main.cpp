@@ -55,7 +55,7 @@ std::vector<HANDLE> GetAllThreadHandles(DWORD dwProcessId, DWORD dwDesiredAccess
     std::vector<HANDLE> threadHandles;
     HANDLE hSnapshot = INVALID_HANDLE_VALUE;
 
-    // �����߳̿���
+    // 创建线程快照
     hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
     if (hSnapshot == INVALID_HANDLE_VALUE) {
         printf("创建线程快照失败，错误码: %lu\n", GetLastError());
