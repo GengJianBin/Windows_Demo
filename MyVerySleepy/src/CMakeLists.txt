@@ -57,7 +57,8 @@ source_group("utils" FILES ${UTILS})
 target_compile_definitions(${PROJECT_NAME} PUBLIC 
     _WIN64
     WIN32
-    _DEBUG
+    $<$<CONFIG:Debug>:_DEBUG>
+    $<$<CONFIG:Release>:NDEBUG>
     _WINDOWS
     _CRT_SECURE_NO_WARNINGS
     _CRT_SECURE_NO_DEPRECATE 
@@ -76,7 +77,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 # take effect only target
 target_link_directories(${PROJECT_NAME} PRIVATE
-    ../libs/x64/Debug/
+    ../libs/x64/$<CONFIG>/
 )
 
 # extern link libs
@@ -88,8 +89,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   psapi.lib
   #crashback.lib
   dbgeng.lib
-  wxbase31ud.lib
-  wxzlibd.lib
+  $<$<CONFIG:Debug>:wxbase31ud.lib>
+  $<$<CONFIG:Debug>:wxzlibd.lib>
+  $<$<CONFIG:Release>:wxbase31u.lib>
+  $<$<CONFIG:Release>:wxzlib.lib>
 )
 
 set(OBJ_FILE_DIR $<TARGET_FILE_DIR:${PROJECT_NAME}>)

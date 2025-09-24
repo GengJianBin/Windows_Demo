@@ -31,10 +31,12 @@ REM cmake -S . -B build -G "Visual Studio 17 2022" -A Win32
 
 REM compile solution
 cd build
+echo "**** Build Debug Version****"
 cmake --build . --config Debug
-
+echo "**** Build Release Version****"
+cmake --build . --config Release
 REM switch x64 directory
-cd .
+cd ..
 
 REM switch root directory
 cd ../..
