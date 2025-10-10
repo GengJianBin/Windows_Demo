@@ -74,3 +74,8 @@ target_include_directories("${PROJECT_NAME}Lib" PRIVATE
     ../include
     ./wxWidgets/include/
 )
+
+target_compile_options("${PROJECT_NAME}Lib" PRIVATE 
+  $<$<CONFIG:Debug>:/MTd>
+  $<$<CONFIG:Release>:/MT>
+)

@@ -53,7 +53,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   "${PROJECT_NAME}Lib.lib"
 )
 
-
 set(OBJ_FILE_DIR $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 # copy dll to exe path
 add_custom_command(
@@ -69,4 +68,9 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/srcsrv.dll         ${OBJ_FILE_DIR}srcsrv.dll
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/symsrv.dll         ${OBJ_FILE_DIR}/symsrv.dll 
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/dll/dbghelp_x64/symsrv.yes         ${OBJ_FILE_DIR}/symsrv.yes
+)
+
+target_compile_options("${PROJECT_NAME}" PRIVATE 
+  $<$<CONFIG:Debug>:/MTd>
+  $<$<CONFIG:Release>:/MT>
 )

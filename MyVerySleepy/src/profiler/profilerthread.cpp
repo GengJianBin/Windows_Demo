@@ -42,7 +42,7 @@ http://www.gnu.org/copyleft/gpl.html..
 
 // DE: 20090325: Profiler has a list of threads to profile
 // RM: 20130614: Profiler time can now be limited (-1 = until cancelled)
-ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>& target_threads, SymbolInfo *sym_info_, Debugger *debugger_)
+ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>& target_threads, SymbolInfo *sym_info_, Debugger *debugger_,std::wstring prof_filename)
 :	profilers(),
 	target_process(target_process_),
 	sym_info(sym_info_),
@@ -74,7 +74,12 @@ ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>
 	status = L"Initializing";
 
 	//filename = wxFileName::CreateTempFileName(wxEmptyString); // gjb
-	filename = L"C:/Users/13684/AppData/Local/Temp/test.sleepy";
+	if(prof_filename.empty()){
+		filename = L"C:/Users/13684/AppData/Local/Temp/test.sleepy";
+	}
+	else{
+		filename = prof_filename;
+	}
 }
 
 
