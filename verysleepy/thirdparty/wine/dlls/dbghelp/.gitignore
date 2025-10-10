@@ -1,0 +1,11 @@
+# Sleepy-specific .gitignore
+
+# Visual Studio
+*.sdf
+*.opensdf
+*.suo
+*.user
+
+/vs/bin/
+/vs/obj/
+/vs/int/

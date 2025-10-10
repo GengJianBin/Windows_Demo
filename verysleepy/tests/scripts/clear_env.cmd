@@ -1,0 +1,15 @@
+set PATH=%WinDir%\System32
+set DevEnvDir=
+set FrameworkDir=
+set FrameworkDIR32=
+set FrameworkVersion32=
+set INCLUDE=
+set LIB=
+set LIBPATH=
+set VCINSTALLDIR=
+set VSINSTALLDIR=
+set WindowsSdkDir=
+set VC=
+set VS_YEAR=
+set CC=
+set MAKE=

@@ -1,0 +1,6 @@
+EXPORTS
+RtlImageNtHeader
+NtQuerySystemInformation
+NtQueryInformationThread
+RtlImageRvaToVa
+RtlImageDirectoryEntryToData

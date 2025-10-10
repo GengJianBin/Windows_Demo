@@ -1,0 +1,56 @@
+#define wxUSE_RC_MANIFEST 1
+#define wxUSE_DPI_AWARE_MANIFEST 1
+
+#include "wx/msw/wx.rc"
+
+sleepy ICON "sleepy.ico"
+
+button_next PNG "Button-Next.png"
+button_prev PNG "Button-Previous.png"
+button_download PNG "Button-Download.png"
+button_refresh PNG "Button-Refresh.png"
+button_profileall PNG "Button-ProfileAll.png"
+button_profilesel PNG "Button-ProfileSel.png"
+button_pause PNG "Button-Pause.png"
+button_go PNG "Button-Go.png"
+button_up PNG "Button-Up.png"
+button_down PNG "Button-Down.png"
+button_add PNG "Button-Add.png"
+button_remove PNG "Button-Remove.png"
+button_exportcsv PNG "Button-ExportCSV.png"
+
+#include "../appinfo.h"
+#include "../version.h"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION    VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH,VERSION_DIRTY
+ PRODUCTVERSION VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH,VERSION_DIRTY
+ FILEFLAGSMASK  0x3fL
+#ifdef _DEBUG
+ FILEFLAGS      VER_DEBUG
+#else
+ FILEFLAGS      0
+#endif
+ FILEOS         VOS__WINDOWS32
+ FILETYPE       VFT_APP
+ FILESUBTYPE    0
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN
+		BLOCK "040904E4"
+		BEGIN
+			VALUE "CompanyName",      VENDOR   "\0"
+			VALUE "FileDescription",  APPNAME  "\0"
+			VALUE "FileVersion",      VERSION  "\0"
+			VALUE "InternalName",     "sleepy" "\0"
+			VALUE "LegalCopyright",   "Copyright (C) " VENDOR " and contributors" "\0"
+			VALUE "OriginalFilename", "sleepy.exe" "\0"
+			VALUE "ProductName",      APPNAME "\0"
+			VALUE "ProductVersion",   VERSION "\0"
+		END
+	END
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x409, 1252
+	END
+END

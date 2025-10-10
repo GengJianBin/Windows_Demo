@@ -1,0 +1,54 @@
+# See http://www.appveyor.com/docs/appveyor-yml
+
+version: '{build}'
+
+branches:
+  except:
+  - /^travis.*$/
+
+clone_depth: 5
+
+cache:
+- x86_64-7.3.0-release-win32-seh-rt_v5-rev0.7z
+- i686-7.3.0-release-win32-dwarf-rt_v5-rev0.7z
+
+# https://www.appveyor.com/docs/build-environment/#build-worker-images
+image: Visual Studio 2019
+
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: QOuiktPDkbsZmX/lOynJrOrrpR09k8C14rSPRjGnohwrgc4Ee97qjoEQpODFb1ZK
+  CTEST_OUTPUT_ON_FAILURE: 1
+  matrix:
+  - MINGW_TARGET: mingw64
+  - MINGW_TARGET: mingw32
+
+install:
+- set Path=C:\Python36;%Path%
+- python -m ensurepip
+- python -m pip install cpp-coveralls==0.4.2
+# CMake refuses to generate MinGW Makefiles if sh.exe is in the Path
+- ps: Get-Command sh.exe -All | Remove-Item
+
+before_build:
+- set ENABLE_COVERAGE=yes
+- if "%APPVEYOR_REPO_TAG%"=="true" set ENABLE_COVERAGE=no
+- if NOT "%MINGW_TARGET%"=="mingw64" set ENABLE_COVERAGE=no
+
+build_script:
+- powershell -NoProfile -ExecutionPolicy Bypass -file build.ps1 -buildRoot %CD%\build -target %MINGW_TARGET%
+
+on_success:
+- if "%COVERALLS_REPO_TOKEN%"=="" set ENABLE_COVERAGE=no
+- if "%ENABLE_COVERAGE%"=="yes" C:\Python36\Scripts\coveralls --include src --gcov-options="-lp"
+
+artifacts:
+- path: build\mingw??\drmingw-*.7z
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: E46gT6yNIKl9L5tmcJdNY6NJ+KXmaNV7U19ZpNjz2R8U2dRUwBceMKqCHE5cs3JA
+  artifact: /.*\.7z/
+  on:
+    appveyor_repo_tag: true

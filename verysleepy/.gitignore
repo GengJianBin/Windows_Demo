@@ -1,0 +1,13 @@
+/obj/
+/.vs/
+/setup.exe
+
+/src/version.h
+
+*.VC.db
+*.VC.opendb
+*.ipch
+*.opensdf
+*.sdf
+*.suo
+*.user
