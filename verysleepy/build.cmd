@@ -1,6 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
 
+rem set toolset=v143 by gjb
+set TOOLSET=v143
+rem switcn native dev environment by gjb
+call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" -arch=x64
+
 rem Get options from the command line
 
 for %%a in (%*) do set %%a
@@ -79,12 +84,12 @@ for %%p in (Win32 x64) do (
 	rem This configuration is only used for the Wine dbghelp implemenation
 	rem to support debugging 32-bit programs from a 64-bit host program.
 
-	"%MSBUILD%" /p:Configuration="!CONFIGURATION! - Wow64" /p:Platform=!PLATFORM! /p:PlatformToolset=!TOOLSET! sleepy.sln
+	"%MSBUILD%" /p:Configuration="!CONFIGURATION! - Wow64";RuntimeLibrary=MultiThreaded /p:Platform=!PLATFORM! /p:PlatformToolset=!TOOLSET! sleepy.sln
 	if errorlevel 1 exit /b 1
 
 	rem Now build the non-Wow64 configuration.
 
-	"%MSBUILD%" /p:Configuration=!CONFIGURATION! /p:Platform=!PLATFORM! /p:PlatformToolset=!TOOLSET! sleepy.sln
+	"%MSBUILD%" /p:Configuration=!CONFIGURATION!;RuntimeLibrary=MultiThreaded /p:Platform=!PLATFORM! /p:PlatformToolset=!TOOLSET! sleepy.sln 
 	if errorlevel 1 exit /b 1
 
 	rem Extract app information (needed by signing).

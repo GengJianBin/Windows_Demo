@@ -72,3 +72,9 @@ include(build/cmake/main.cmake)
 if(wxBUILD_SAMPLES AND wxUSE_GUI)
     set_directory_properties(PROPERTIES VS_STARTUP_PROJECT minimal)
 endif()
+
+#add by gjb 
+if(MSVC)
+    # set global runtime ：Debug use MTd，Release use MT
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
