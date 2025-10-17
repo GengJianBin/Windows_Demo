@@ -38,8 +38,13 @@ file(GLOB COMMON_WX
     ./wxWidgets/include/*.*
 )
 
+file(GLOB API 
+    ./api/*.*
+)
+
 source_group("profiler" FILES ${PROFILER_HEADERS} ${PROFILER_SOURCES})
 source_group("utils" FILES ${UTILS})
+source_group("api" FILES ${API})
 
 # extern lib directory must be before add_execute or add_library and it is take effect in global
 # link_directories(
@@ -57,6 +62,7 @@ add_library(${STATIC_LIB_NAME} STATIC
     ${PROFILER_SOURCES}
     ${UTILS}
     ${COMMON_WX}
+    ${API}
 )
 
 target_compile_definitions(${STATIC_LIB_NAME} PUBLIC 
@@ -74,6 +80,7 @@ target_compile_definitions(${STATIC_LIB_NAME} PUBLIC
 
 # extern include directory
 target_include_directories(${STATIC_LIB_NAME} PRIVATE 
+    ./
     ../include
     ./wxWidgets/include/
 )
@@ -90,6 +97,7 @@ add_library(${SHARED_LIB_NAME} SHARED
     ${PROFILER_SOURCES}
     ${UTILS}
     ${COMMON_WX}
+    ${API}
 )
 
 target_compile_definitions(${SHARED_LIB_NAME} PUBLIC 
@@ -107,6 +115,7 @@ target_compile_definitions(${SHARED_LIB_NAME} PUBLIC
 
 # extern include directory
 target_include_directories(${SHARED_LIB_NAME} PRIVATE 
+    ./
     ../include
     ./wxWidgets/include/
 )

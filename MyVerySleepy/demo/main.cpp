@@ -1,11 +1,14 @@
-#include <iostream>
 #include "utils/dbginterface.h"
 #include "profiler/profilerthread.h"
 #include "profiler/debugger.h"
 #include "utils/osutils.h"
 #include "profiler/symbolinfo.h"
+#include "api/PerfProfInterface.h"
 #include <tlhelp32.h>
+#include <iostream>
 #include <thread>
+
+#define RUN_STATIC_LIBRARY 0
 
 void symLogCallback(const wchar_t* text)
 {
@@ -88,15 +91,8 @@ std::vector<HANDLE> GetAllThreadHandles(DWORD dwProcessId, DWORD dwDesiredAccess
     return threadHandles;
 }
 
-
-int main() {
-    std::cout << "Hello, CMake Project!" << std::endl;
-
-    std::cout << "Please Input The Process ID To Capture:" << std::endl;
-    DWORD pId = 0;
-    std::cin >> pId;
-
-    //1. set system log callback
+bool CaptureByStaticLib(DWORD pid){
+     //1. set system log callback
     g_symLog = symLogCallback;
 
     //2. init symbol information
@@ -109,14 +105,14 @@ int main() {
 
 	Debugger* debugger = NULL;
 	
-    HANDLE pHandle = GetProcessHandleByPID(pId, PROCESS_ALL_ACCESS);
+    HANDLE pHandle = GetProcessHandleByPID(pid, PROCESS_ALL_ACCESS);
 
     DWORD dwDesiredAccess = THREAD_ALL_ACCESS;
-    std::vector<HANDLE> vecTheadHandles = GetAllThreadHandles(pId, dwDesiredAccess);
+    std::vector<HANDLE> vecTheadHandles = GetAllThreadHandles(pid, dwDesiredAccess);
 
     bool bProfile = CanProfileProcess(pHandle);
     if (!bProfile) {
-        std::cout << "This process can't be profile,this process id is " << pId << std::endl;
+        std::cout << "This process can't be profile,this process id is " << pid << std::endl;
     }
     SymbolInfo* pSymInfo =  new SymbolInfo();
 
@@ -167,5 +163,61 @@ int main() {
         profilerthread = nullptr;
     }
     CloseHandle(pHandle);
+}
+
+bool CaptureByDynamicLib(DWORD pid){
+    bool bRet = false;
+    typedef PerfProfInterface* (*ExpCreatePerfProfIns)();
+    typedef void (*ExpDestroyPerfProfIns)(PerfProfInterface*);
+    ExpCreatePerfProfIns myExpCreatePerfProfIns = nullptr;
+    ExpDestroyPerfProfIns myExpDestroyPerfProfIns = nullptr;
+    HMODULE hDll =  nullptr;
+    do{
+        // 1. loadlibrary
+        hDll = LoadLibraryA("PerfProf.dll");
+        if (hDll == NULL) {
+            std::cerr << "Load DLL failed!error:" << GetLastError() << std::endl;
+            break;
+        }
+
+        // 2. get function address
+        ExpCreatePerfProfIns myExpCreatePerfProfIns = (ExpCreatePerfProfIns)GetProcAddress(hDll, "CreatePerfProfIns");
+        ExpDestroyPerfProfIns myExpDestroyPerfProfIns = (ExpDestroyPerfProfIns)GetProcAddress(hDll, "DestroyPerfProfIns");
+
+        if (myExpCreatePerfProfIns == nullptr || myExpDestroyPerfProfIns == nullptr) {
+            std::cerr << "get function addreee failed erro is " << GetLastError() << std::endl;
+            FreeLibrary(hDll);  //release DLL
+            break;
+        }
+
+
+        PerfProfInterface* pIns = myExpCreatePerfProfIns();
+        if(pIns){
+            pIns->set_capture_time(20);
+            pIns->set_capture_path(L"C:\\Users\\13684\\AppData\\Roaming\\MysleepTestDir\\test20251017.sleepy");
+            pIns->start_capture(pid);
+            myExpDestroyPerfProfIns(pIns);
+            bRet = true;
+            break;
+        }
+    }while(false);
+    if(hDll){
+        FreeLibrary(hDll);
+        hDll = nullptr;
+    }
+    return bRet; 
+}
+
+int main() {
+    std::cout << "Hello, CMake Project!" << std::endl;
+
+    std::cout << "Please Input The Process ID To Capture:" << std::endl;
+    DWORD pId = 0;
+    std::cin >> pId;
+#if RUN_STATIC_LIBRARY
+    CaptureByStaticLib();
+#else
+    CaptureByDynamicLib(pId);
+#endif
     return 0;
 }
