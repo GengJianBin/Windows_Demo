@@ -50,9 +50,11 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   $<$<CONFIG:Debug>:wxzlibd.lib>
   $<$<CONFIG:Release>:wxbase31u.lib>
   $<$<CONFIG:Release>:wxzlib.lib>
-  "${PROJECT_NAME}Lib.lib"
+  "PerfProfLib.lib"
 )
 
+# Make sure PerfProfLib is built before ${PROJECT_NAME}
+add_dependencies(${PROJECT_NAME} PerfProfLib)
 set(OBJ_FILE_DIR $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 # copy dll to exe path
 add_custom_command(
