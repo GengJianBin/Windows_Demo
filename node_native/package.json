@@ -1,0 +1,31 @@
+{
+  "name": "napi-adapter",
+  "version": "1.0.0",
+  "description": "N-API Native Addon Development Interface Adapter",
+  "main": "index.js",
+  "scripts": {
+    "install": "node-gyp rebuild",
+    "build": "node-gyp build",
+    "clean": "node-gyp clean",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "napi",
+    "native",
+    "addon",
+    "adapter"
+  ],
+  "author": "",
+  "license": "MIT",
+  "gypfile": true,
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "node-gyp": "^9.0.0"
+  }
+}
+
+
+
