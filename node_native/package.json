@@ -23,7 +23,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "node-gyp": "^9.0.0"
   }
 }
 
