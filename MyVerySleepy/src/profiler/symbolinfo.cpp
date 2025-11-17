@@ -252,7 +252,7 @@ void SymbolInfo::loadSymbols(HANDLE process_handle_, bool download)
 
 DbgHelp* SymbolInfo::getGccDbgHelp()
 {
-	if (/*prefs.UseWine()*/1) //gjb
+	if (/*prefs.UseWine()*/0) //gjb
 	{
 #ifdef _WIN64
 		// We can't use the regular dbghelpw to profile 32-bit applications,

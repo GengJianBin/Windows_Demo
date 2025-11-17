@@ -27,9 +27,9 @@ http://www.gnu.org/copyleft/gpl.html..
 #include "profilerthread.h"
 #include "threadinfo.h"
 #include "debugger.h"
-//#include <wx/wfstream.h> // gjb
-//#include <wx/zipstrm.h> // gjb
-//#include <wx/txtstrm.h> // gjb
+#include <wx/wfstream.h> // gjb
+#include <wx/zipstrm.h> // gjb
+#include <wx/txtstrm.h> // gjb
 
 #include "../utils/stringutils.h"
 #include <fstream>
@@ -42,7 +42,7 @@ http://www.gnu.org/copyleft/gpl.html..
 
 // DE: 20090325: Profiler has a list of threads to profile
 // RM: 20130614: Profiler time can now be limited (-1 = until cancelled)
-ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>& target_threads, SymbolInfo *sym_info_, Debugger *debugger_)
+ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>& target_threads, SymbolInfo *sym_info_, Debugger *debugger_,std::wstring prof_filename)
 :	profilers(),
 	target_process(target_process_),
 	sym_info(sym_info_),
@@ -74,7 +74,12 @@ ProfilerThread::ProfilerThread(HANDLE target_process_, const std::vector<HANDLE>
 	status = L"Initializing";
 
 	//filename = wxFileName::CreateTempFileName(wxEmptyString); // gjb
-	filename = L"D:/test.tmp";
+	if(prof_filename.empty()){
+		filename = L"C:/Users/13684/AppData/Local/Temp/test.sleepy";
+	}
+	else{
+		filename = prof_filename;
+	}
 }
 
 
@@ -201,7 +206,7 @@ void ProfilerThread::saveData()
 {
 	//get process id of the process the target thread is running in
 	//const DWORD process_id = GetProcessIdOfThread(profiler.getTarget());
-#if 0 // gjb
+#if 1 // gjb
 	wxFFileOutputStream out(filename);
 	wxZipOutputStream zip(out);
 	wxTextOutputStream txt(zip, wxEOL_NATIVE, wxConvAuto(wxFONTENCODING_UTF8));
@@ -323,8 +328,10 @@ void ProfilerThread::saveData()
 	//------------------------------------------------------------------------
 	// Change FORMAT_VERSION when the file format changes
 	// (and becomes unreadable by older versions of Sleepy).
-	zip.PutNextEntry(L"Version " _T(FORMAT_VERSION) L" required");
-	txt << FORMAT_VERSION << "\n";
+	//zip.PutNextEntry(L"Version " _T(FORMAT_VERSION) L" required"); //gjb
+	//txt << FORMAT_VERSION << "\n"; //gjb
+	zip.PutNextEntry(L"Version " L"0.92" L" required");
+	txt << L"0.92" << "\n";
 
 
 	if (!out.IsOk() || !zip.IsOk())

@@ -1,0 +1,9 @@
+*.sleepy
+
+*.unpacked
+*.txt
+Version * required
+
+*.ilk
+*.obj
+*.tmp
