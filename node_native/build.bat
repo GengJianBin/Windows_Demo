@@ -27,6 +27,51 @@ echo [信息] 检测到 Node.js 版本:
 node --version
 echo.
 
+REM 检查 Python 或 Python3 并解析版本，要求 >= 3.3
+set "PYTHON_CMD="
+for /f "delims=" %%I in ('where python3.exe 2^>nul') do if not defined PYTHON_CMD set "PYTHON_CMD=%%I"
+if not defined PYTHON_CMD for /f "delims=" %%I in ('where python.exe 2^>nul') do if not defined PYTHON_CMD set "PYTHON_CMD=%%I"
+
+if not defined PYTHON_CMD (
+    echo [错误] 未找到 Python，请先安装 Python 3.3 或更高版本
+    pause
+    exit /b 1
+)
+echo python路径: !PYTHON_CMD!
+for /f "tokens=2 delims= " %%I in ("!PYTHON_CMD! --version 2>&1") do set "PY_VERSION=%%I"
+for /f "tokens=1-2 delims=." %%a in ("!PY_VERSION!") do (
+    set "PY_MAJOR=%%a"
+    set "PY_MINOR=%%b"
+)
+
+set "PY_OK=1"
+if !PY_MAJOR! lss 3 (
+    set "PY_OK=0"
+) else if !PY_MAJOR! equ 3 (
+    if !PY_MINOR! lss 3 set "PY_OK=0"
+)
+
+if "!PY_OK!"=="0" (
+    echo [错误] Python 版本小于 3.3，检测到版本: !PY_VERSION!
+    exit /b 1
+) else (
+    echo [成功] 检测到 Python 版本: !PY_VERSION! （^>= 3.3）
+    if not exist ".venv" (
+        echo [信息] 正在创建虚拟环境 .venv...
+        call !PYTHON_CMD! -m venv .venv
+        if !errorlevel! neq 0 (
+            exit /b 1
+        )
+        echo [成功] 虚拟环境已创建: .venv
+    ) else (
+        echo [信息] 已存在虚拟环境 venv，跳过创建
+    )
+    echo [信息] 正在激活虚拟环境 .venv...
+    call .venv\Scripts\activate.bat
+    echo [成功] 虚拟环境已激活: .venv
+    echo.
+)
+
 REM 检查 node-gyp 是否安装
 where node-gyp >nul 2>&1
 if %errorlevel% neq 0 (
