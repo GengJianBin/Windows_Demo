@@ -1,0 +1,4 @@
+ 
+node_native/build 
+node_native/.venv 
+node_native/package-lock.json 
