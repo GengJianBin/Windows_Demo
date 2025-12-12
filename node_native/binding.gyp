@@ -3,7 +3,7 @@
     {
       "target_name": "napi_adapter",
       "sources": [
-        "napi_adapter.cpp"
+        "src/napi_adapter.cpp"
       ],
       "defines": [
         "NAPI_DISABLE_CPP_EXCEPTIONS"

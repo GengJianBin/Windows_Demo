@@ -2,12 +2,12 @@
   "name": "napi-adapter",
   "version": "1.0.0",
   "description": "N-API Native Addon Development Interface Adapter",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "install": "node-gyp rebuild",
     "build": "node-gyp build",
     "clean": "node-gyp clean",
-    "test": "node test.js"
+    "test": "node demo/test.js"
   },
   "keywords": [
     "napi",
