@@ -1,0 +1,368 @@
+/* ============================================
+   全局样式 - 深色主题
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  overflow: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== 主容器 ===== */
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #1e1e2e;
+}
+
+/* ===== 头部 ===== */
+.app-header {
+  padding: 20px 24px 0 24px;
+  flex-shrink: 0;
+}
+
+.app-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #cba6f7;
+  margin-bottom: 16px;
+}
+
+/* ===== Tab 切换 ===== */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #313244;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #7f849c;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: #cdd6f4;
+}
+
+.tab-btn.active {
+  color: #cba6f7;
+  border-bottom-color: #cba6f7;
+}
+
+.tab-btn .tab-count {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  font-size: 12px;
+  background: #313244;
+  border-radius: 10px;
+  color: #a6adc8;
+}
+
+.tab-btn.active .tab-count {
+  background: #45375d;
+  color: #cba6f7;
+}
+
+/* ===== 源列表区域 ===== */
+.source-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px;
+  min-height: 0;
+}
+
+/* 自定义滚动条 */
+.source-area::-webkit-scrollbar {
+  width: 8px;
+}
+.source-area::-webkit-scrollbar-thumb {
+  background: #45475a;
+  border-radius: 4px;
+}
+.source-area::-webkit-scrollbar-thumb:hover {
+  background: #585b70;
+}
+
+/* ===== 网格布局 ===== */
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+/* ===== 单个源卡片 ===== */
+.source-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #313244;
+  background: #181825;
+  transition: all 0.2s ease;
+  aspect-ratio: 16 / 10;
+}
+
+.source-card:hover {
+  border-color: #585b70;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.source-card.selected {
+  border-color: #cba6f7;
+  box-shadow: 0 0 0 2px rgba(203, 166, 247, 0.25),
+              0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.source-card .thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 无缩略图时的占位 */
+.source-card .thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e1e2e 0%, #181825 100%);
+  color: #585b70;
+  font-size: 36px;
+}
+
+/* 底部名称条 */
+.source-card .label-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 10px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.source-card .label-bar .icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.source-card .label-bar .name {
+  font-size: 12px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 选中角标 */
+.source-card .check-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #cba6f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #1e1e2e;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.source-card.selected .check-badge {
+  opacity: 1;
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #585b70;
+  gap: 12px;
+}
+
+.empty-state .empty-icon {
+  font-size: 48px;
+}
+
+.empty-state .empty-text {
+  font-size: 14px;
+}
+
+/* ===== 加载状态 ===== */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 14px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #313244;
+  border-top-color: #cba6f7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state .loading-text {
+  font-size: 14px;
+  color: #7f849c;
+}
+
+/* ===== 底部控制面板 ===== */
+.control-panel {
+  flex-shrink: 0;
+  padding: 14px 24px;
+  background: #181825;
+  border-top: 1px solid #313244;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 勾选框组 */
+.checkbox-group {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #a6adc8;
+  transition: color 0.2s;
+}
+
+.checkbox-item:hover {
+  color: #cdd6f4;
+}
+
+/* 自定义复选框 */
+.checkbox-item input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #585b70;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.checkbox-item input[type="checkbox"]:hover {
+  border-color: #cba6f7;
+}
+
+.checkbox-item input[type="checkbox"]:checked {
+  background: #cba6f7;
+  border-color: #cba6f7;
+}
+
+.checkbox-item input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -1px;
+  left: 2px;
+  font-size: 12px;
+  color: #1e1e2e;
+  font-weight: 700;
+}
+
+/* 按钮组 */
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 9px 24px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background: #313244;
+  color: #cdd6f4;
+}
+
+.btn-cancel:hover {
+  background: #45475a;
+}
+
+.btn-confirm {
+  background: #cba6f7;
+  color: #1e1e2e;
+  font-weight: 600;
+}
+
+.btn-confirm:hover:not(:disabled) {
+  background: #d9b8ff;
+  box-shadow: 0 2px 12px rgba(203, 166, 247, 0.35);
+}
+
+.btn-confirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===== 选中摘要 ===== */
+.selection-summary {
+  font-size: 12px;
+  color: #7f849c;
+  margin-right: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
